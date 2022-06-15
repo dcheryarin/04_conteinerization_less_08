@@ -20,19 +20,19 @@
 
 Это
 
-- kubectl set image deployment/$CI_PROJECT_NAME *=$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID --namespace $CI_ENVIRONMENT_NAME
+    - kubectl set image deployment/$CI_PROJECT_NAME *=$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID --namespace $CI_ENVIRONMENT_NAME
 
 На это
 
-- sed -i "s,__IMAGE__,$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID,g" kube/deployment.yaml
-- kubectl apply -f kube/ --namespace $CI_ENVIRONMENT_NAME
+    - sed -i "s,__IMAGE__,$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID,g" kube/deployment.yaml
+    - kubectl apply -f kube/ --namespace $CI_ENVIRONMENT_NAME
 
 Вторую строчку шага деплоя (которая отслеживает статус деплоя) оставьте без изменений.
 
 Попробуйте закоммитить свои изменения, запушить их в репозиторий (тот же, который вы создавали во время лекции на Gitlab.com) и посмотреть на выполнение CI в интерфейсе Gitlab.
 
-    Так как окружений у нас два (stage и prod), то помимо образа при апплае из CI нам также было бы хорошо подменять host в ingress.yaml. Попробуйте реализовать это по аналогии, подставляя в ингресс вместо плэйсхолдера значение переменной $CI_ENVIRONMENT_NAME
+Так как окружений у нас два (stage и prod), то помимо образа при апплае из CI нам также было бы хорошо подменять host в ingress.yaml. Попробуйте реализовать это по аналогии, подставляя в ингресс вместо плэйсхолдера значение переменной $CI_ENVIRONMENT_NAME
 
-    Так же попробуйте протестировать откат на предыдущую версию, при возникновении ошибки при деплое
+Так же попробуйте протестировать откат на предыдущую версию, при возникновении ошибки при деплое
 
 Для этого можно изменить значение переменной DB_HOST в deployment.yaml на какое нибудь несуществующее. Тогда при старте приложения оно не сможет найти БД и будет постоянно рестрартовать. CI должен в течении progressDeadlineSeconds: 300 и по.сле этого запустить процедуру отката. При этом не должно возникать недоступности приложения, так как старая реплика должна продолжать работать, пока новая пытается стартануть.
