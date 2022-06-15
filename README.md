@@ -24,8 +24,8 @@
 
 На это
 
-    - sed -i "s,__IMAGE__,$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID,g" kube/deployment.yaml
-    - kubectl apply -f kube/ --namespace $CI_ENVIRONMENT_NAME
+- sed -i "s,__IMAGE__,$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID,g" kube/deployment.yaml
+- kubectl apply -f kube/ --namespace $CI_ENVIRONMENT_NAME
 
 Вторую строчку шага деплоя (которая отслеживает статус деплоя) оставьте без изменений.
 
